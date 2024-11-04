@@ -16,6 +16,12 @@ pipeline {
                 sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
             }
         }
+	stage('Set Up Database') {
+            steps {
+                sh 'php artisan migrate'
+                sh 'php artisan db:seed' 
+            }
+        }
         stage('Run Tests') {
             steps {
                 sh 'vendor/bin/phpunit'
