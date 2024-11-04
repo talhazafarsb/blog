@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        APP_ENV = 'testing'
+        APP_ENV = 'local'
     }
 
     stages {
@@ -14,6 +14,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
+                sh 'cp .env.example .env'
             }
         }
 	stage('Set Up Database') {
