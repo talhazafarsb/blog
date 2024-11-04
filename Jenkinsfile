@@ -22,8 +22,7 @@ pipeline {
         }
 	stage('Set Up Database') {
             steps {
-                sh 'php artisan migrate'
-                sh 'php artisan db:seed' 
+                sh 'php artisan migrate --seed' 
             }
         }
         stage('Run Tests') {
