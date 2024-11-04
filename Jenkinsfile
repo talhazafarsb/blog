@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         APP_ENV = 'local'
+        DB_PASSWORD = '!@bugdeaL3r'
     }
 
     stages {
