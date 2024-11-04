@@ -14,8 +14,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
-                sh 'cp .env.example .env'
-                sh 'php artisan key:generate'
             }
         }
         stage('Run Tests') {
