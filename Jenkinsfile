@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         APP_ENV = 'local'
+	DB_DATABASE='db_blog'
         DB_PASSWORD = '!@bugdeaL3r'
     }
 
