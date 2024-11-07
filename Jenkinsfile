@@ -31,12 +31,6 @@ pipeline {
                 sh 'vendor/bin/phpunit'
             }
         }
-	stage('creating continer'){
-		steps{
-			sh 'docker-compose build'
-			sh 'docker-compose up -d'
-		}
-	}
     }
 
     post {
