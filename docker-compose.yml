@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: blog
+    container_name: blog-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    environment:
+      DB_HOST: blog-db
+    networks:
+      - blog
+
+  db:
+    image: mysql:8.0
+    container_name: blog-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-your_db_name} # Fallback to a default name
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-your_root_password} # Fallback to a default password
+      MYSQL_PASSWORD: ${DB_PASSWORD:-your_password} # Fallback to a default password
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - blog
+
+  nginx:
+    image: nginx:alpine
+    container_name: blog-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - blog
+
+networks:
+  blog:
+    driver: bridge
