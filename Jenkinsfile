@@ -20,5 +20,13 @@ pipeline {
                 sh 'php artisan test'
             }
         }
+        stage ('creating-containers') {
+            steps {
+                echo 'Container creating ...'
+                sh 'docker-compose build'
+                sh('docker-compose up -d')
+                echo 'Containers created successfully'
+            }
+        }
     }
 }
