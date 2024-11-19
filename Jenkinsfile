@@ -22,6 +22,8 @@ pipeline {
         }
         stage ('creating-containers') {
             steps {
+                sh 'docker-compose down -v --rmi all'
+                sh 'docker system prune -f'
                 echo 'Container creating ...'
                 sh 'docker-compose build'
                 sh('docker-compose up -d')
