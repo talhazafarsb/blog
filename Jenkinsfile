@@ -1,6 +1,9 @@
 pipeline {
     agent any
-
+    environment {
+        DB_DATABASE=db_blog
+        DB_PASSWORD=!@bugdeaL3r
+    }
     stages {
         stage('inall-dependencies') {
             steps {
