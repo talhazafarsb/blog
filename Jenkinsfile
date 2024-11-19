@@ -11,5 +11,10 @@ pipeline {
 		        sh 'php artisan key:gen'
             }
         }
+        Stage('Run-test') {
+            steps {
+                sh 'php artisan test'
+            }
+        }
     }
 }
