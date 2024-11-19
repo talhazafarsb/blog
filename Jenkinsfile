@@ -10,8 +10,9 @@ pipeline {
                 echo 'installing dependencies...'
                 sh 'cp .env.example .env'
                 sh 'composer install'
-		        sh 'php artisan config:cache'
+		        sh 'php artisan config:clear'
 		        sh 'php artisan key:gen'
+                sh 'php artisan config:cache'
             }
         }
         stage('Run-test') {
