@@ -1,0 +1,14 @@
+# Use the official Nginx image with Debian base
+FROM nginx:alpine
+
+# Copy the custom Nginx config file
+COPY ./default.conf /etc/nginx/conf.d/default.conf
+
+# Copy the Laravel app files into the Nginx container
+COPY . /var/www/blog
+
+# Set correct permissions for the files
+RUN chown -R nginx:nginx /var/www/blog
+
+# Expose port 80 for Nginx
+EXPOSE 80

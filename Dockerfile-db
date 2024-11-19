@@ -1,0 +1,9 @@
+# Use the official MySQL 8.0 image with Debian base
+FROM mysql:8.0
+
+# Set environment variables for the MySQL database
+ENV MYSQL_ROOT_PASSWORD=!@bugdeaL3r
+ENV MYSQL_DATABASE=db_blog
+
+# Expose MySQL port
+EXPOSE 3306

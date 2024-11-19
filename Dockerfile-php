@@ -1,0 +1,29 @@
+# Use the official PHP image with FPM and Debian base
+FROM php:8.0-fpm-buster
+
+# Install system dependencies and PHP extensions
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    git \
+    unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd zip pdo pdo_mysql \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory inside the container
+WORKDIR /var/www/blog
+
+# Copy application files into the container
+COPY . /var/www/blog
+
+# Set correct permissions for Laravel files
+RUN chown -R www-data:www-data /var/www/blog/storage /var/www/blog/bootstrap/cache
+
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
+
+CMD ["php-fpm"]
