@@ -8,15 +8,5 @@ pipeline {
                 sh 'composer install'
             }
         }
-#	stage('run-migration') {
-#		steps {
-#			sh 'php artisan migrate --seed'
-#		}
-#	}
-#	stage('creating images') {
-#		steps {
-#			sh 'docker-compse build'	
-#		}
-#	}
     }
 }
