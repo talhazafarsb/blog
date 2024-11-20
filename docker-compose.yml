@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-php
+    image: blog-app
     volumes:
       - .:/var/www/blog
     networks:
@@ -14,6 +15,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-nginx
+    image: blog-nginx  
     depends_on:
       - blog-php
       - blog-db
@@ -28,6 +30,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-db
+    image: blog-db  
     environment:
       MYSQL_ROOT_PASSWORD: '!@bugdeaL3r'
       MYSQL_DATABASE: db_blog
