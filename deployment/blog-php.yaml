@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-php
+  labels:
+    app: blog-php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog-php
+  template:
+    metadata:
+      labels:
+        app: blog-php
+    spec:
+      containers:
+        - name: blog-php
+          image: talhazafarsb1/blog-app:v2
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - mountPath: /var/www/blog
+              name: blog-app-code
+      volumes:
+        - name: blog-app-code
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog-php
+spec:
+  ports:
+    - port: 9000
+      targetPort: 9000
+  selector:
+    app: blog-php

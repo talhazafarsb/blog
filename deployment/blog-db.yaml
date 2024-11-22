@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-db
+  labels:
+    app: blog-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog-db
+  template:
+    metadata:
+      labels:
+        app: blog-db
+    spec:
+      containers:
+        - name: blog-db
+          image: talhazafarsb1/blog-db:v2
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "!@bugdeaL3r"
+            - name: MYSQL_DATABASE
+              value: "db_blog"
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: blog-db-data
+      volumes:
+        - name: blog-db-data
+          persistentVolumeClaim:
+            claimName: blog-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: blog-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog-db
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: blog-db

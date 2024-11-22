@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-nginx
+  labels:
+    app: blog-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog-nginx
+  template:
+    metadata:
+      labels:
+        app: blog-nginx
+    spec:
+      containers:
+        - name: blog-nginx
+          image: talhazafarsb1/blog-nginx:v3
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /var/www/blog
+              name: blog-app-code
+            - mountPath: /var/cache/nginx
+              name: nginx-cache
+      securityContext:
+        runAsUser: 1001155999
+      volumes:
+        - name: nginx-cache
+          emptyDir: {}
+        - name: blog-app-code
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog-nginx
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: blog-nginx
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: blog-nginx-route
+spec:
+  to:
+    kind: Service
+    name: blog-nginx
+  port:
+    targetPort: 80
