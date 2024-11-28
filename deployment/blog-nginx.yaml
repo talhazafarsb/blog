@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
         - name: blog-nginx
-          image: talhazafarsb1/blog-nginx:v3
+          image: talhazafarsb1/blog-nginx:v8081
           ports:
-            - containerPort: 80
+            - containerPort: 8081
           volumeMounts:
             - mountPath: /var/www/blog
               name: blog-app-code
@@ -38,8 +38,8 @@ metadata:
   name: blog-nginx
 spec:
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 8081
+      targetPort: 8081
   selector:
     app: blog-nginx
 ---
@@ -52,4 +52,4 @@ spec:
     kind: Service
     name: blog-nginx
   port:
-    targetPort: 80
+    targetPort: 8081

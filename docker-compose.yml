@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/var/www/blog
     ports:
-      - "80:80"
+      - "8081:8081"
     networks:
       - blog-network
 
