@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: blog-php
-          image: talhazafarsb1/blog-app:v8081
+          image: talhazafarsb1/blog-app:v5
           ports:
             - containerPort: 9000
           volumeMounts:

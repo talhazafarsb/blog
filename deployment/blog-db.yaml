@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: blog-db
-          image: talhazafarsb1/blog-db:v8081
+          image: talhazafarsb1/blog-db:v5
           ports:
             - containerPort: 3306
           env:

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: blog-nginx
-          image: talhazafarsb1/blog-nginx:v8081
+          image: talhazafarsb1/blog-nginx:v5
           ports:
             - containerPort: 8081
           volumeMounts:
