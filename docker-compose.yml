@@ -1,11 +1,12 @@
 version: '3.8'
 
 services:
-  blog-php:
+  blog-app:
     build:
       context: .
-      dockerfile: Dockerfile-php
+      dockerfile: Dockerfile-app
     image: blog-app
+    container_name: blog-app
     networks:
       - blog-network
 
@@ -14,8 +15,9 @@ services:
       context: .
       dockerfile: Dockerfile-nginx
     image: blog-nginx
+    container_name: blog-nginx
     depends_on:
-      - blog-php
+      - blog-app
       - blog-db
     volumes:
       - .:/var/www/blog
@@ -29,6 +31,7 @@ services:
       context: .
       dockerfile: Dockerfile-db
     image: blog-db
+    container_name: blog-db
     environment:
       MYSQL_ROOT_PASSWORD: '!@bugdeaL3r'
       MYSQL_DATABASE: db_blog

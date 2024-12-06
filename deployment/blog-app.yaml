@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: blog-php
+  name: blog-app
   labels:
-    app: blog-php
+    app: blog-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: blog-php
+      app: blog-app
   template:
     metadata:
       labels:
-        app: blog-php
+        app: blog-app
     spec:
       containers:
-        - name: blog-php
+        - name: blog-app
           image: talhazafarsb1/blog-app:v5
           ports:
             - containerPort: 9000
@@ -29,10 +29,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: blog-php
+  name: blog-app
 spec:
   ports:
     - port: 9000
       targetPort: 9000
   selector:
-    app: blog-php
+    app: blog-app
