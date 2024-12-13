@@ -5,5 +5,10 @@ FROM mysql:8.0
 ENV MYSQL_ROOT_PASSWORD=!@bugdeaL3r
 ENV MYSQL_DATABASE=db_blog
 
+#add permissions to mysqld directory and sub folders
+RUN chown -R mysql:mysql /var/run/mysqld && \
+    chmod -R 777 /var/run/mysqld
+
+
 # Expose MySQL port
 EXPOSE 3306

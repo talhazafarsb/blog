@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: blog-app
-          image: talhazafarsb1/blog-app:v5
+          image: docker.io/talhazafarsb1/blog-app:latest
           ports:
             - containerPort: 9000
           volumeMounts:
