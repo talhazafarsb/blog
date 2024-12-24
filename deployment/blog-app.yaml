@@ -16,15 +16,9 @@ spec:
     spec:
       containers:
         - name: blog-app
-          image: docker.io/talhazafarsb1/blog-app:latest
+          image: docker.io/talhazafarsb1/blog-app:vocp2
           ports:
             - containerPort: 9000
-          volumeMounts:
-            - mountPath: /var/www/blog
-              name: blog-app-code
-      volumes:
-        - name: blog-app-code
-          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

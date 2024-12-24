@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: blog-db
-          image: docker.io/talhazafarsb1/blog-db:latest
+          image: docker.io/talhazafarsb1/blog-db:vocp2
           ports:
             - containerPort: 3306
           env:

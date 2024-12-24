@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: blog-nginx
-          image: docker.io/talhazafarsb1/blog-nginx:latest
+          image: docker.io/talhazafarsb1/blog-nginx:vocp2
           ports:
             - containerPort: 8081
           volumeMounts:
@@ -25,7 +25,7 @@ spec:
             - mountPath: /var/cache/nginx
               name: nginx-cache
       securityContext:
-        runAsUser: 1001155999
+        runAsUser: 1004929999
       volumes:
         - name: nginx-cache
           emptyDir: {}

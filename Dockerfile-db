@@ -9,6 +9,11 @@ ENV MYSQL_DATABASE=db_blog
 RUN chown -R mysql:mysql /var/run/mysqld && \
     chmod -R 777 /var/run/mysqld
 
+# Switch to the MySQL user
+USER mysql
 
 # Expose MySQL port
 EXPOSE 3306
+
+# Start MySQL server
+CMD ["mysqld"]
