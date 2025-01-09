@@ -16,9 +16,11 @@ spec:
     spec:
       containers:
         - name: blog-app
-          image: docker.io/talhazafarsb1/blog-app:vocp2
+          image: docker.io/talhazafarsb1/blog-app:vocp5
           ports:
             - containerPort: 9000
+      securityContext:
+        runAsNonRoot: true
 ---
 apiVersion: v1
 kind: Service
