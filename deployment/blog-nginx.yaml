@@ -14,6 +14,8 @@ spec:
       labels:
         app: blog-nginx
     spec:
+      securityContext:
+        runAsNonRoot: true
       containers:
         - name: blog-nginx
           image: docker.io/talhazafarsb1/blog-nginx:vocp5
@@ -24,8 +26,6 @@ spec:
               name: blog-app-code
             - mountPath: /var/cache/nginx
               name: nginx-cache
-      securityContext:
-        runAsNonRoot: true
       volumes:
         - name: nginx-cache
           emptyDir: {}
@@ -53,3 +53,5 @@ spec:
     name: blog-nginx
   port:
     targetPort: 8081
+  tls:                 # Optional if HTTPS is required
+    termination: edge  # Edge termination for HTTPS (remove if not using HTTPS)
