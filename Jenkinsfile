@@ -7,6 +7,7 @@ pipeline {
     stages {
         stage('inall-dependencies') {
             steps {
+                sh 'git branch'
                 echo 'installing dependencies...'
                 sh 'cp .env.example .env'
                 sh 'composer install'
