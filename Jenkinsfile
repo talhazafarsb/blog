@@ -19,6 +19,7 @@ pipeline {
         stage('Run-test') {
             steps {
                 sh 'php artisan test'
+                sh 'echo $PWD'
             }
         }
         stage ('creating-containers') {
