@@ -31,10 +31,22 @@ pipeline {
                 echo 'Containers created successfully'
             }
         }
-        stage ('pushing-containers') {
+        stage ('logging docker and pushing-containers') {
             steps {
-                echo 'pushing docker containers'
-                sh 'docker info | grep Username'
+                echo 'Logging into Docker Hub and pushing containers'
+                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                   sh """
+                   echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+                   docker tag blog-app talhazaffar0/blog-app
+                   docker tag blog-db talhazaffar0/blog-db
+                   docker tag blog-nginx talhazaffar0/blog-nginx
+
+                   docker push talhazaffar0/blog-app
+                   docker push talhazaffar0/blog-db
+                   docker push talhazaffar0/blog-nginx
+                   """
+                }
             }
         }
 
