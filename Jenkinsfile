@@ -34,14 +34,14 @@ pipeline {
         stage ('pushing-containers') {
             steps {
                 echo 'pushing docker containers'
-                sh 'docker images'
-                sh 'docker tag blog-app talhazaffar0/blog-app'
-                sh 'docker tag blog-app talhazaffar0/blog-nginx'
-                sh 'docker tag blog-app talhazaffar0/blog-db'
-                sh 'docker push talhazaffar0/blog-app'
-                sh 'docker push talhazaffar0/blog-nginx'
-                sh 'docker push talhazaffar0/blog-db'
-                echo 'Containers pushed successfully'
+                sh 'docker info | grep Username'
+#                sh 'docker tag blog-app talhazaffar0/blog-app'
+#                sh 'docker tag blog-app talhazaffar0/blog-nginx'
+#                sh 'docker tag blog-app talhazaffar0/blog-db'
+#                sh 'docker push talhazaffar0/blog-app'
+#                sh 'docker push talhazaffar0/blog-nginx'
+#                sh 'docker push talhazaffar0/blog-db'
+#                echo 'Containers pushed successfully'
             }
         }
 
