@@ -32,7 +32,7 @@ COPY . /var/www/blog
 #    chgrp -R 0 /var/www/blog/storage/ /var/www/blog/bootstrap/cache /var/www/blog/.env && \
 #    chmod -R guo+w /var/www/blog/storage/logs/laravel.log /var/www/blog/bootstrap/cache && \
 #    chown -R appuser:appuser /var/www/blog
-RUN chmod -R ugo+rw /var/www/carnelian/storage/framework  /var/www/carnelian/bootstrap/cache /var/www/carnelian/storage/logs/ /var/www/carnelian/.env /var/www/carnelian/public
+RUN chmod -R ugo+rw /var/www/blog/storage/framework  /var/www/blog/bootstrap/cache /var/www/blog/storage/logs/ /var/www/blog/.env /var/www/blog/public
 #switch user
 USER appuser
 
