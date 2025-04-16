@@ -1,0 +1,92 @@
+apiVersion: tekton.dev/v1
+kind: pipeline
+metadata:
+  name: blog-pipeline
+spec:
+  workspaces:
+    - name: shared-workspace
+  params:
+    - name: repo-url
+      type: string
+      default: "https://github.com/talhazafarsb/blog.git"
+    - name: revision
+      type: string
+      default: "vocp5"
+    - name: directory
+      type: string
+      default: "blog"
+  tasks:
+    - name: clone-repo
+      taskRef:
+        name: git-clone-blog
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: repo-url
+          value: "$(params.repo-url)"
+        - name: revision
+          value: "$(params.revision)"
+        - name: directory
+          value: "$(params.directory)"
+    - name: install-composer
+      runAfter:
+        - clone-repo
+      taskSpec:
+        steps:
+          - name: install
+            image: php:8.0-cli-alpine
+            workingDir: $(workspaces.source.path)/$(params.directory)
+            script: |
+              #!/bin/sh
+              cd $(workspaces.source.path)/$(params.directory)
+              cat /etc/os-release
+              pwd
+              php -v
+              curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+              apt-get update && apt-get install -y git
+              composer install
+              #composer install --no-dev --prefer-dist
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: setup-env
+      runAfter:
+        - install-composer
+      taskSpec:
+        steps:
+          - name: setup-env
+            image: php:8.0-cli-alpine
+            workingDir: $(workspaces.source.path)/$(params.directory)
+            script: |
+              #!/bin/sh
+              cd $(workspaces.source.path)/$(params.directory)
+              pwd
+              cp .env.example .env
+              echo "APP_KEY=$(php artisan key:generate --show)" >> .env
+              echo "DB_HOST=blog-db" >> .env
+              echo "DB_PORT=3306" >> .env
+              echo "DB_DATABASE=db_blog" >> .env
+              echo "DB_USERNAME=root" >> .env
+              echo "DB_PASSWORD=!@bugdeaL3r" >> .env
+              cat .env
+              echo "dependencies installation completed"
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: migrate-database
+      runAfter:
+        - setup-env
+      taskSpec:
+        steps:
+          - name: migrate
+            image: php:8.0-cli
+            workingDir: $(workspaces.source.path)/$(params.directory)
+            script: |
+              #!/bin/sh
+              apt-get update && apt-get install -y libpq-dev libzip-dev unzip \
+                  && docker-php-ext-install pdo pdo_mysql
+              php artisan migrate --seed
+      workspaces:
+        - name: source
+          workspace: shared-workspace

@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: laravel-pipeline
+spec:
+  workspaces:
+    - name: shared-workspace
+  params:
+    - name: repo-url
+      type: string
+      default: "https://github.com/talhazafarsb/blog.git"
+    - name: revision
+      type: string
+      default: "main"
+    - name: directory
+      type: string
+      default: "blog"
+  tasks:
+    - name: clone-repo
+      taskRef:
+        name: git-clone-blog
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: repo-url
+          value: "$(params.repo-url)"
+        - name: revision
+          value: "$(params.revision)"
+        - name: directory
+          value: "$(params.directory)"
+    - name: install-composer
+      runAfter:
+        - clone-repo
+      taskSpec:
+        steps:
+          - name: install
+            image: composer:2
+            workingDir: $(workspaces.source.path)/$(params.directory)
+            script: |
+              #!/bin/sh
+              composer install --no-dev --prefer-dist
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: setup-env
+      runAfter:
+        - install-composer
+      taskSpec:
+        steps:
+          - name: setup-env
+            image: alpine
+            workingDir: $(workspaces.source.path)/$(params.directory)
+            script: |
+              #!/bin/sh
+              cp .env.example .env
+              echo "APP_KEY=$(php artisan key:generate --show)" >> .env
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: migrate-database
+      runAfter:
+        - setup-env
+      taskSpec:
+        steps:
+          - name: migrate
+            image: php:8.0-cli
+            workingDir: $(workspaces.source.path)/$(params.directory)
+            script: |
+              #!/bin/sh
+              php artisan migrate --seed
+      workspaces:
+        - name: source
+          workspace: shared-workspace

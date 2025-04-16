@@ -1,0 +1,62 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: git-clone-blog
+spec:
+  params:
+    - name: repo-url
+      type: string
+      default: "https://github.com/talhazafarsb/blog.git"
+    - name: revision
+      type: string
+      default: "pipeline"
+    - name: directory
+      type: string
+      default: "blog"
+  workspaces:
+    - name: output
+  steps:
+    - name: clone
+      image: alpine/git
+      script: |
+        #!/bin/sh
+        if [ -d "$(workspaces.output.path)/$(params.directory)" ]; then
+          echo "Removing existing directory: $(workspaces.output.path)/$(params.directory)"
+          rm -rf $(workspaces.output.path)/$(params.directory)
+        fi
+        git clone -b $(params.revision) $(params.repo-url) $(workspaces.output.path)/$(params.directory)
+    - name: list-files
+      image: alpine
+      script: |
+        #!/bin/sh
+        ls -la /$(workspaces.output.path)/$(params.directory)
+#    - name: install-compose
+#      image: php:8.0-cli-alpine
+#      workingDir: $(workspaces.output.path)/$(params.directory)
+#      script: |
+#        #!/bin/sh
+#        cd $(workspaces.output.path)/$(params.directory)
+#        #cat /etc/os-release    pwd    php -v
+#        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#        apt-get update && apt-get install -y git
+#        composer install
+#    - name: setup-env
+#      image: php:8.0-cli-alpine
+#      workingDir: $(workspaces.output.path)/$(params.directory)
+#      script: |
+#        #!/bin/sh
+#       cd $(workspaces.output.path)/$(params.directory)
+#        pwd
+#        php -v
+#        cp .env.example .env
+#        find .env*
+#        echo "APP_KEY=$(php artisan key:gen --show)" >> .env
+#        cat .env
+#        echo "setup-env done"
+#    - name: migrate-database
+#      image: php:8.0-cli-alpine
+#      workingDir: $(workspaces.output.path)/$(params.directory)
+#      script: |
+#        #!/bin/sh
+#        pwd
+#        php artisan migrate --seed

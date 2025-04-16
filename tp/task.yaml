@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: clone-repository
+spec:
+  params:
+    - name: git-repo
+      description: git repository url
+      type: string
+      default: "https://github.com/talhazafarsb/blog-git"
+    - name: revision
+      description: define git repository branch otherwise it can clone main branch
+      type: string
+      default: "main"
+    - name: directory
+      description: define git project directory
+      type: string
+      default: "blog"
+  workspaces:
+    - name: project
+steps:
