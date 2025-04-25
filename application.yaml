@@ -8,7 +8,7 @@ spec:
 
   source:
     repoURL: https://github.com/talhazafarsb/blog.git
-    targetRevision: vocp5
+    targetRevision: ArgoCD
     path: deployment/
 
   destination:
