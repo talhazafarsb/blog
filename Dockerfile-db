@@ -6,7 +6,8 @@ ENV MYSQL_ROOT_PASSWORD=!@bugdeaL3r
 ENV MYSQL_DATABASE=db_blog
 
 #add permissions to mysqld directory and sub folders
-RUN chown -R mysql:mysql /var/run/mysqld && \
+RUN RUN [ -d /var/run/mysqld ] || mkdir -p /var/run/mysqld && \
+    chown -R mysql:mysql /var/run/mysqld && \
     chmod -R 777 /var/run/mysqld
 
 # Switch to the MySQL user
