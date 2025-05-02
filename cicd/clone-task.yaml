@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: clone-repo
+spec:
+  params:
+    - name: repo-url
+      description: Git repository URL
+    - name: revision
+      description: Git branch, tag or commit
+      default: "argoCD"
+  workspaces:
+    - name: output
+      description: The workspace where the repo will be cloned
+  steps:
+    - name: clone
+      image: alpine/git
+      script: |
+        git clone --branch $(params.revision) $(params.repo-url) $(workspaces.output.path)

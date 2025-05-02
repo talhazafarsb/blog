@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: blog-pipelinerun
+spec:
+  pipelineRef:
+    name: blog-pipeline
+  params:
+    - name: repo-url
+      value: "https://github.com/talhazafarsb/blog.git"
+    - name: revision
+      value: "ArgoCD"
+    - name: app-image
+      value: "docker.io/talhazaffar0/blog-app:tkn"
+    - name: nginx-image
+      value: "docker.io/talhazaffar0/blog-nginx:tkn"
+    - name: db-image
+      value: "docker.io/talhazaffar0/blog-db:tkn"
+    - name: registry-username
+      value: "talhazaffar0"
+    - name: registry-password
+      value: "!@bugdeaL3r"
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        metadata:
+          name: shared-workspace-pvc
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 1Gi
+    - name: docker-credentials
+      secret:
+        secretName: regcred
