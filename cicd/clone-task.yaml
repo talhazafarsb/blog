@@ -17,4 +17,5 @@ spec:
       image: alpine/git
       script: |
         git clone --branch $(params.revision) $(params.repo-url) $(workspaces.output.path)
-        ls -a $(workspaces.output.path)
+        echo "Cloned content:"
+        ls -la $(workspaces.output.path)

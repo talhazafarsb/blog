@@ -47,6 +47,14 @@ spec:
         - name: source
           workspace: shared-workspace
 
+
+    - name: debug-before-build
+      image: alpine
+      workingDir: $(workspaces.source.path)
+      script: |
+        echo "Context Path:"
+        ls -la $(params.CONTEXT)
+
     - name: build-and-push-blog-app
       taskRef:
         name: build-and-push-image
@@ -58,11 +66,10 @@ spec:
         - name: docker-credentials
           workspace: docker-credentials
       params:
-      params:
         - name: IMAGE
           value: "$(params.app-image)"
         - name: CONTEXT
-          value: "./"
+          value: "./blog"
         - name: DOCKERFILE
           value: Dockerfile-app
 
@@ -80,7 +87,7 @@ spec:
         - name: IMAGE
           value: "$(params.nginx-image)"
         - name: CONTEXT
-          value: "./"
+          value: "./blog"
         - name: DOCKERFILE
           value: Dockerfile-nginx
 
@@ -98,7 +105,7 @@ spec:
         - name: IMAGE
           value: "$(params.db-image)"
         - name: CONTEXT
-          value: "./"
+          value: "./blog"
         - name: DOCKERFILE
           value: Dockerfile-db
 
