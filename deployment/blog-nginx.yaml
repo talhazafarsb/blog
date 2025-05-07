@@ -18,7 +18,7 @@ spec:
         runAsNonRoot: true
       containers:
         - name: blog-nginx
-          image: docker.io/talhazafarsb1/blog-nginx:tkn
+          image: docker.io/talhazaffar0/blog-nginx:tkn
           ports:
             - containerPort: 8081
           volumeMounts:

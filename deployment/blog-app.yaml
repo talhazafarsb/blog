@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: blog-app
-          image: docker.io/talhazafarsb1/blog-app:tkn
+          image: docker.io/talhazaffar0/blog-app:tkn
           ports:
             - containerPort: 9000
       securityContext:
