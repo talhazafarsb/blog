@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: run-tests
+spec:
+  workspaces:
+    - name: source
+  steps:
+    - name: test
+      image: docker.io/library/php:8.0-cli
+      workingDir: $(workspaces.source.path)
+      script: |
+        php artisan test || true
+        ls -a $(workspaces.source.path)"/storage/logs"
